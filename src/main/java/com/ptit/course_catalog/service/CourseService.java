@@ -1,23 +1,26 @@
 package com.ptit.course_catalog.service;
 
+import com.ptit.course_catalog.dto.request.CoursePatchRequest;
+import com.ptit.course_catalog.dto.request.CoursePostRequest;
 import com.ptit.course_catalog.dto.response.CourseResponse;
-import com.ptit.course_catalog.mapper.CourseMapper;
-import com.ptit.course_catalog.repository.CourseRepository;
-import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+public interface CourseService {
+    Page<CourseResponse> getAll(Pageable pageable);
 
-@Service
-public class CourseService {
-    private final CourseRepository courseRepository;
-    private final CourseMapper mapper;
+    CourseResponse getById(Long id);
 
-    public CourseService(CourseRepository courseRepository, CourseMapper mapper) {
-        this.courseRepository = courseRepository;
-        this.mapper = mapper;
-    }
+    CourseResponse create(CoursePostRequest request);
 
-    public List<CourseResponse> getAll() {
-        return courseRepository.findAll().stream().map(CourseMapper::toResponse).toList();
-    }
+    CourseResponse update(Long id, CoursePostRequest request);
+
+    CourseResponse patch(Long id, CoursePatchRequest request);
+
+    void delete(Long id);
+
+    CourseResponse uploadImage(Long id, MultipartFile file);
+
+    void deleteImage(Long id);
 }
